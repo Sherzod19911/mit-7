@@ -1,0 +1,24 @@
+{
+  "name": "mit-7",
+  "version": "1.0.0",
+  "description": "",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://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@github.com/Sherzod19911/mit-7.git"
+  },
+  "author": "Jonny91",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Sherzod19911/mit-7/issues"
+  },
+  "homepage": "https://github.com/Sherzod19911/mit-7#readme",
+  "dependencies": {
+    "express": "^4.18.2",
+    "nodemon": "^3.0.1"
+  }
+}
