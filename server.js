@@ -22,8 +22,8 @@ app.set("views","views");
 app.set("view engine","ejs");
 
 //--------------------------4-----------------//
-app.post("create-item", (req, res) => {
-    console.log(req.body);// bu yerda boddyni tekshirish
+app.post("/create-item", (req, res) => {
+    console.log(req);// bu yerda boddyni tekshirish
     res.json({ test: "success"})  // json shaklida malumotlarni qaytarish
     // post esa uzi bn malumotni olib kelib data basega yozadi
     // postda requestni tarkibida body qismida malumotlar keladi.
