@@ -4,9 +4,19 @@
 
 console.log("Web serverni boshlash");
 const express = require("express");
-const res = require("express/lib/response")
+//const res = require("express/lib/response")
 const app = express();
 const http = require("http");
+const fs = require("fs");
+
+let user;
+fs.readFile("database/user.json","utf8", (err,data) => {
+    if(err) {
+        console.log("ERROR:",err);
+} else {
+    user = JSON.parse(data);
+}
+})
 
 //-------------------1------------------//
  app.use(express.static("public"));
@@ -23,8 +33,16 @@ app.set("view engine","ejs");
 
 //--------------------------4-----------------//
 app.post("/create-item", (req, res) => {
-    console.log(req);// bu yerda boddyni tekshirish
-    res.json({ test: "success"})  // json shaklida malumotlarni qaytarish
+  //  console.log(req);                    // bu yerda boddyni tekshirish
+    //res.json({ test: "success"});
+});
+    app.get('/author', (req, res ) => {
+        res.render("author", {user: user});  //user.jsondagi malumorlarni biz tugridan tugri olib klib quya ololmaymiz,uni biz fayl system bn olib kela olomiz.
+        // fayl system core modul bulgani uchun biz uni install qilish shart emas biz uni chaqiramiz
+    });
+    
+    
+    // json shaklida malumotlarni qaytarish
     // post esa uzi bn malumotni olib kelib data basega yozadi
     // postda requestni tarkibida body qismida malumotlar keladi.
     // req 3 qismdan iborat
@@ -32,16 +50,16 @@ app.post("/create-item", (req, res) => {
     //2 boshida headerda 
     // 3 body qismida itemni qiymatini olishda 
     // agar req uestni butun qismini log qilsak  uni polni tarkibi chiqadi.
-})
+
 
 app.get("/", function (req, res) {
-    res.render("harid");  // git malumotni data basedan olishda ishlatiladi
+    res.render("harid");               // git malumotni data basedan olishda ishlatiladi
 });
 
  const server = http.createServer(app);
- let PORT = 3000;
+ let PORT = 4000;
  server.listen(PORT, function () {
- console.log(`server is running succssfully on port: ${PORT}`)
+ console.log(`server is running succssfully on port: ${PORT}`);
  });
 
  // bizda git log --oneline ni kiritib undan keyin:
@@ -51,3 +69,13 @@ app.get("/", function (req, res) {
  // bu yerda mening projectimga jonny91 yozilgan
 
  // biz endi node js ni  libuv dan urganamiz.
+
+// EJS Frameworkda portofolia publishing qilamiz
+// fayl system orqali  uzimizni data basedegan folder ichidagi user.jsondi uqishga harakat qiqlayapman
+
+
+
+
+//savol?:  json format bn objectni farqijson formatda keylarida qushtirnoq ham buladi,
+// objectda bulmaydi
+// bu yerda stringdan objectga aylantirib beradi
