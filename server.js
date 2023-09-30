@@ -53,13 +53,13 @@ app.post("/create-item", (req, res) => {
 
 
 app.get("/", function (req, res) {
-    res.render("harid");               // git malumotni data basedan olishda ishlatiladi
+    res.render("reja");               // git malumotni data basedan olishda ishlatiladi
 });
 
  const server = http.createServer(app);
  let PORT = 4000;
  server.listen(PORT, function () {
- console.log(`server is running succssfully on port: ${PORT}`);
+ console.log(`server is running succssfully on port: ${PORT}, http://localhost:${PORT}`);
  });
 
  // bizda git log --oneline ni kiritib undan keyin:
