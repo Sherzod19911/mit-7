@@ -2,13 +2,13 @@
 <html lang="en">
     <head>
         <meta charset="UTF-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <!-- <meta http-equiv="X-UA-Compatible" content="IE=edge"> -->
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>Jonny91</title>
-<Link
+<link
 rel="stylesheet"
 href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css"
-integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DKKm4iYMj70gZWKYbI706tWS"
+integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS"
 crossorigin="anonymous"
 />
 </head>
@@ -17,23 +17,40 @@ crossorigin="anonymous"
         <h1 class="display-4 text-center py-1">REJA VA MAQSADLAR</h1>
 
         <div class="jumbotron p-3 shadow-sm">
-            <form id="create-forum" action="/create-item" method="POST">
-                <div class="d-flex align-items: center">
+            <form id="create-form" action="/create-item" method="POST">
+                <div class="d-flex align-items-center">
                     <input
                     id="create-field"
-                    name="item"
-                    aotofocus
+                    name="reja"
+                    autofocus
                     autocomplete="off"
                     class="form-control mr-3"
                     type="text"
                     style="flex: 1"
                     />
-                    <button class="btn btn-primary" style="border-radius: 28px" >Yangi Reja Qo'shish
+                    <button class="btn btn-primary" style="border-radius: 20px" >Yangi Reja Qo'shish
                     </button>
                 </div>
                 </form>
             </div>
-            <button id="clean-all" class="btn btn-danger" style="border-radius: 20px">
+        
+          <ul id="item-list" class="list-group pb-5">
+            <% items.map(function(item) {%>
+                <li 
+                class="list-group-item list-group-item-info d-flex align-items-center justify-content-between"
+                >
+                <span class="item-text"><%=item.reja%></span>
+                <div>
+                    <button data-id="<%=item._id%>"   class="edit-me btn btn-secondary btn-sm mr-1">
+                         Ozgartirish
+                        </button>
+                        <button data-id="<%=item._id %>"  class="delete-me btn btn-danger btn-sm">ochirish</button>
+                  </div>
+                </li>
+           <% }) %>
+          </ul>
+
+             <button id="clean-all" class="btn btn-danger" style="border-radius: 20px">
                 Hamma Rejalarni  o'chirish
             </button>
         </div>

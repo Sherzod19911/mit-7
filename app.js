@@ -4,7 +4,7 @@
 
 console.log("Web serverni boshlash");
 const express = require("express");
-//const res = require("express/lib/response")
+const res = require("express/lib/response")
 const app = express();
 //const http = require("http");
 const fs = require("fs");
@@ -13,14 +13,14 @@ const db = require("./server").db();
 // bu db orqali databasega turli xilmalumotlarni yozish uqish uchurish yoki delete qilishni.
 //amalga oshiradi
 
-let user;
-fs.readFile("database/user.json","utf8", (err,data) => {
-    if(err) {
-        console.log("ERROR:",err);
-} else {
-    user = JSON.parse(data);
-}
-})
+// let user;
+// fs.readFile("database/user.json","utf8", (err,data) => {
+//     if(err) {
+//         console.log("ERROR:",err);
+// } else {
+//     user = JSON.parse(data);
+// }
+// })
 
 // MongoDB connect
 
@@ -40,15 +40,45 @@ app.set("view engine","ejs");
 
 //--------------------------4-----------------//
 app.post("/create-item", (req, res) => {
-  //  console.log(req);                    // bu yerda boddyni tekshirish
-    //res.json({ test: "success"});
+   // console.log("user entered /create-item");
+   console.log(req.body);
+   const new_reja = req.body.reja;
+   db.collection("plans").insertOne({reja: new_reja}, (err,data) => {
+    if(err) {
+        console.log(err);
+        res.end("something went wrong")
+    } else {
+        res.end("successfully added");
+    }
+   });
+   //res.end("success") ;                                  // bu yerda boddyni tekshiri
+ //res.json({ test: "success"});
 });
-    app.get('/author', (req, res ) => {
-        res.render("author", {user: user});  //user.jsondagi malumorlarni biz tugridan tugri olib klib quya ololmaymiz,uni biz fayl system bn olib kela olomiz.
-        // fayl system core modul bulgani uchun biz uni install qilish shart emas biz uni chaqiramiz
-    });
+
+
+     app.get("/",function (req, res) {
+      console.log("user entered /create-item");
+      db.collection("plans")
+      .find()
+      .toArray((err, data) => {
+       if (err) {
+        console.log(err);
+        res.end("something went wrong");
+       } else {
+        //console.log(data);
+         res.render("reja",{items: data});
+    }
+   });
+  });
 
     module.exports = app;
+
+    // app.get('/author', (req, res ) => {
+    //     res.render("author", {user: user});  //user.jsondagi malumorlarni biz tugridan tugri olib klib quya ololmaymiz,uni biz fayl system bn olib kela olomiz.
+    //     // fayl system core modul bulgani uchun biz uni install qilish shart emas biz uni chaqiramiz
+    // });
+
+
     
     
     // json shaklida malumotlarni qaytarish
@@ -61,9 +91,9 @@ app.post("/create-item", (req, res) => {
     // agar req uestni butun qismini log qilsak  uni polni tarkibi chiqadi.
 
 
-app.get("/", function (req, res) {
-    res.render("reja");               // git malumotni data basedan olishda ishlatiladi
-});
+// app.get("/", function (req, res) {
+//     res.render("reja");               // git malumotni data basedan olishda ishlatiladi
+// });
 
 //  const server = http.createServer(app);
 //  let PORT = 4000;
