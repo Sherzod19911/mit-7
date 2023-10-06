@@ -2,14 +2,22 @@
 // assets bn css ni kuchirib olamiz
 // hamda ejs fayilni viewga olib quyamiz.
 
+
+
+
 console.log("Web serverni boshlash");
 const express = require("express");
 const res = require("express/lib/response")
 const app = express();
 //const http = require("http");
 const fs = require("fs");
+
 // mongono chaqirish;
 const db = require("./server").db();
+const mongodb = require("mongodb"); // bizga kerak bulgan new mongadb objecti bor.
+
+
+
 // bu db orqali databasega turli xilmalumotlarni yozish uqish uchurish yoki delete qilishni.
 //amalga oshiradi
 
@@ -30,7 +38,12 @@ const db = require("./server").db();
  app.use(express.json());
 app.use(express.urlencoded({extended: true }));
 
+
+
+
 //------------------2--------------//
+
+
 
 
 
@@ -38,23 +51,43 @@ app.use(express.urlencoded({extended: true }));
 app.set("views","views");
 app.set("view engine","ejs");
 
+
+
+
+
 //--------------------------4-----------------//
 app.post("/create-item", (req, res) => {
    // console.log("user entered /create-item");
    console.log(req.body);
    const new_reja = req.body.reja;
    db.collection("plans").insertOne({reja: new_reja}, (err,data) => {
-    if(err) {
-        console.log(err);
-        res.end("something went wrong")
-    } else {
-        res.end("successfully added");
-    }
+    console.log(data.ops);
+    res.json(data.ops[0]);
+
+
+
+
+    // if(err) {
+    //     console.log(err);
+    //     res.end("something went wrong")
+    // } else {
+    //     res.end("successfully added");
+    // }
    });
    //res.end("success") ;                                  // bu yerda boddyni tekshiri
  //res.json({ test: "success"});
 });
 
+
+app.post("/delete-item", (req,res) => {
+  const id = req.body.id;
+  db.collection("plans").deleteOne({_id:  new mongodb.ObjectId(id)}, function(err,data) {
+   // res.json({state:success});
+  })
+  //console.log(id);
+  res.end("done");
+
+})
 
      app.get("/",function (req, res) {
       console.log("user entered /create-item");
