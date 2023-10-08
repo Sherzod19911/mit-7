@@ -7,9 +7,9 @@
 
 console.log("Web serverni boshlash");
 const express = require("express");
-const res = require("express/lib/response")
+//const res = require("express/lib/response")
 const app = express();
-//const http = require("http");
+const http = require("http");
 const fs = require("fs");
 
 // mongono chaqirish;
@@ -57,40 +57,78 @@ app.set("view engine","ejs");
 
 //--------------------------4-----------------//
 app.post("/create-item", (req, res) => {
-   // console.log("user entered /create-item");
-   console.log(req.body);
+   console.log("user entered /create-item");
+   //console.log(req.body);
    const new_reja = req.body.reja;
    db.collection("plans").insertOne({reja: new_reja}, (err,data) => {
-    console.log(data.ops);
+    //console.log(data.ops);
     res.json(data.ops[0]);
 
 
 
 
-    // if(err) {
+    //if(err) {
     //     console.log(err);
-    //     res.end("something went wrong")
-    // } else {
-    //     res.end("successfully added");
-    // }
+        //res.end("something went wrong")
+     //} else {
+        //res.end("successfully added");
+   // }
    });
-   //res.end("success") ;                                  // bu yerda boddyni tekshiri
- //res.json({ test: "success"});
+  // res.end("success") ;                                  // bu yerda boddyni tekshiri
+// res.json({ test: "success"});
 });
 
 
+         //delete operations
+
 app.post("/delete-item", (req,res) => {
   const id = req.body.id;
-  db.collection("plans").deleteOne({_id:  new mongodb.ObjectId(id)}, function(err,data) {
-   // res.json({state:success});
-  })
-  //console.log(id);
-  res.end("done");
+  db.collection("plans").deleteOne(
+    {_id: new mongodb.ObjectId(id)}, function(err, result) { //data resultni urniga
+  //res.json({state:success});
+  }
+  );
+ // console.log(id);
+  //res.end("done");
+});
 
-})
+
+
+   // clean-all operation--------------------------------
+    app.post("/delete-all", (req ,res) => {
+      if(req.body.delete_all) {
+ db.collection("plans").deleteMany(function() {
+  res.json({state:"all plans delete buldi"});
+ });
+      }
+    });
+    console.log(" alhamdulliloh");
+
+      
+    //----------------------------------------------//
+
+
+        // update operations
+
+    app.post("/edit-item", (req, res) => {
+      const data = req.body;
+      console.log(data);
+      db.collection("plans")
+      .findOneAndUpdate({_id:new mongodb.ObjectId(data.id)},
+      { $set: {reja:data.new_input } },
+       function(err, data) {
+        res.json({state:"success"});
+      }
+      );
+    })
+
+// ----------------------------------------------------------//
+
+// yangi reja qushish----------------------------//
+
 
      app.get("/",function (req, res) {
-      console.log("user entered /create-item");
+      console.log("user entered /");
       db.collection("plans")
       .find()
       .toArray((err, data) => {
@@ -100,12 +138,13 @@ app.post("/delete-item", (req,res) => {
        } else {
         //console.log(data);
          res.render("reja",{items: data});
+         console.log("alhamulliloh");
     }
    });
   });
 
     module.exports = app;
-
+//=========================================================================//
     // app.get('/author', (req, res ) => {
     //     res.render("author", {user: user});  //user.jsondagi malumorlarni biz tugridan tugri olib klib quya ololmaymiz,uni biz fayl system bn olib kela olomiz.
     //     // fayl system core modul bulgani uchun biz uni install qilish shart emas biz uni chaqiramiz
@@ -131,7 +170,7 @@ app.post("/delete-item", (req,res) => {
 //  const server = http.createServer(app);
 //  let PORT = 4000;
 //  server.listen(PORT, function () {
-//  console.log(`server is running succssfully on port: ${PORT}, http://localhost:${PORT}`);
+//  console.log("server is running succssfully on port: ${PORT}, http://localhost:${PORT}");
 //  });
 
  // bizda git log --oneline ni kiritib undan keyin:
@@ -150,4 +189,4 @@ app.post("/delete-item", (req,res) => {
 
 //savol?:  json format bn objectni farqijson formatda keylarida qushtirnoq ham buladi,
 // objectda bulmaydi
-// bu yerda stringdan objectga aylantirib beradi
+// bu yerda stringdan objectga aylantirib berad
